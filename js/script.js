@@ -1,51 +1,123 @@
-var filaLixo = ["Pastor", "Murilo", "Kike", "Jub", "Ribs", "Gab"];
+var filaLixo     = [ "Gab", "Ribs", "Jub", "Kike", "Murilo", "Pastor"];
+var comprasDados = [];
+var bostasDados  = [ {nome: "Gab",    bostas: 0},
+					 {nome: "Ribs",   bostas: 0},
+					 {nome: "Jub",    bostas: 0},
+					 {nome: "Kike",   bostas: 0},
+					 {nome: "Murilo", bostas: 0},
+					 {nome: "Pastor", bostas: 0}
+					];
+
 
 function updateTabela(idTabela, valores) {
 
 	tabela = document.getElementById(idTabela);
 	tabela.innerHTML = "";
 
-	valores.forEach(function(elem, indice, vetor) {
+	valores.reverse();
+
+	// Itera todos os elementos do vetor valores
+	valores.forEach(function(elem) {
+		
 		var linha = tabela.insertRow(0);
-		var texto = linha.insertCell(0);
 
-		if (indice == vetor.length-1) {
-			linha.setAttribute('class', "proximo");
+		// Caso o elemento seja um vetor (linha com mais de uma coluna)
+		if (elem.constructor === Array) {
+
+			// Itera todos os elementos de cada elemento
+			elem.forEach(function(elem2, i) {	
+				
+				// Insere uma celula para cada elemento
+				var conteudo = linha.insertCell(i);
+				conteudo.innerHTML = elem2;
+			});	
 		}
-
-		texto.innerHTML = elem;
+		else {
+			var conteudo = linha.insertCell(0);
+			conteudo.innerHTML = elem;			
+		}
+		
 	});
+
+	valores.reverse();
 }
 
 function tirouLixo() {
 
-	let newLast = filaLixo.pop();
-	filaLixo.unshift(newLast);
-	updateTabela("lixo", filaLixo);
+	var newLast = filaLixo.shift();
+	filaLixo.push(newLast);
+
+	updateTabela('lixo', filaLixo);
 }
+
+function geraTabelaCompras() {
+	var botaoRemover = "<button onclick=\"removeCompra(this)\">-</button>";
+
+	var comprasTabela = [];
+	comprasDados.forEach( function(elem) {
+		var compraElem = [elem, botaoRemover];
+		comprasTabela.push(compraElem);
+	});
+	return comprasTabela;
+}
+
+function geraTabelaBostas() {
+
+	var bostasTabela = [];
+
+	bostasDados.forEach( function(elem) {
+		
+		console.log(elem.nome+";");
+		console.log(elem.bostas+";");
+		var bostasElem = [
+			"<p class='nomeBostas'>" + elem.nome +"</p>",
+			"<p class='nroBostas'>" + elem.bostas +"</p>",
+			"<button onclick='addBosta(this)' class='botaoAddBostas'> + </button>"
+		];
+
+		bostasTabela.push(bostasElem);
+	});
+	return bostasTabela;
+}
+
 
 function addCompra() {
 	
-	var tabela = document.getElementById("comprar");
-	var txt = document.getElementById("inputCompras").value;
+	// Gera o nome da compra e seu botao de remover
+	var nomeCompra = document.getElementById("inputCompras").value;
 
-	var compra = tabela.insertRow(tabela.rows.length);
-	var botao  = compra.insertCell(0);
-	var texto  = compra.insertCell(0);
+	// Insere a compra no vetor de dados
+	comprasDados.push(nomeCompra);
 
-	texto.innerHTML = txt;
-	botao.innerHTML = "<button onclick=\"removeCompra(this)\">-</button>";
+	// Gera vetor para mostrar na tabela
+	comprasTabela = geraTabelaCompras();
+
+	// Atualiza tabela de compras
+	updateTabela('comprar', comprasTabela);
 }
 
 function removeCompra(compra) {
 
+	// Remove a compra do vetor de compras
 	var indice = compra.parentNode.parentNode.rowIndex;
-	document.getElementById("comprar").deleteRow(indice);
+	comprasDados.splice(indice, 1);
+
+	// Gera vetor para mostrar na tabela
+	comprasTabela = geraTabelaCompras();
+
+	// Atualiza tabela de compras
+	updateTabela('comprar', comprasTabela);
 }
 
 function addBosta(quem) {
-	var qtd = document.getElementById(quem).innerHTML;
-	qtd = parseInt(qtd);
-	qtd += 1;
-	document.getElementById(quem).innerHTML = qtd;
+
+	var index = quem.parentNode.parentNode.rowIndex;
+
+	bostasDados[index].bostas += 1;
+
+	// Gera dados para mostrar na tabela
+	var tabelaBostas = geraTabelaBostas();
+
+	// Atualiza tabela de bostas
+	updateTabela('bostas', tabelaBostas);
 }

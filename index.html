@@ -36,6 +36,7 @@
     <img src="img/andre_vsf.jpg" align="right" />
 
     <h3>Comprar:</h3>
+    
     <table id="comprar" style="{border-bottom:1px solid black}">
     </table>
 
@@ -67,39 +68,16 @@
     <button id="botaoLixo" onclick="tirouLixo()">Ok</button>
 
     <h3>Bostas acumuladas:</h3>
+
     <table id="bostas">
-    	<tr>
-    		<td>Gab</td>
-    		<td> <p id="bostasGab">0</p> </td>
-    		<td class="botaoBostas"><button onclick= "addBosta('bostasGab')">+</button></td>
-    	</tr>
-    	<tr>
-    		<td>Rib</td>
-    		<td> <p id="bostasRib">0</p> </td>
-    		<td class="botaoBostas"><button onclick= "addBosta('bostasRib')">+</button></td>
-    	</tr>
-    	<tr>
-    		<td>Jub</td>
-    		<td> <p id="bostasJub">0</p> </td>
-    		<td class="botaoBostas"><button onclick= "addBosta('bostasJub')">+</button></td>
-    	</tr>
-    	<tr>
-    		<td>Kike</td>
-    		<td> <p id="bostasKike">0</p> </td>
-    		<td class="botaoBostas"><button onclick= "addBosta('bostasKike')">+</button></td>
-    	</tr>
-    	<tr>
-    		<td>Murilo</td>
-    		<td> <p id="bostasMurilo">0</p> </td>
-    		<td class="botaoBostas"><button onclick= "addBosta('bostasMurilo')">+</button></td>
-    	</tr>
-    	<tr>
-    		<td>Pastor</td>
-    		<td> <p id="bostasPastor">0</p> </td>
-    		<td class="botaoBostas"><button onclick= "addBosta('bostasPastor')">+</button></td>
-    	</tr>
     </table>
 
-</body>
+    <script>
+        var bostasTabela = geraTabelaBostas();
 
+        // Atualiza tabela de bostas
+        updateTabela('bostas', bostasTabela);
+    </script>
+
+</body>
 </html>

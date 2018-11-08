@@ -8,5 +8,8 @@
     "start": "node server.js"
   },
   "author": "Pastor",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "jsonfile": "^5.0.0"
+  }
 }

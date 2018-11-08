@@ -4,48 +4,47 @@ const fs   = require('fs');
 const port = 8080;
     	
 // Server object
-http.createServer( function(request, response) {  
+http.createServer(function(request, response) {  
 
 	// Gets pathname of page requested by client
 	var pathname = url.parse(request.url).pathname;
     console.log("\n");
     console.log("Request for " + pathname + " received.");
 
-    // string that indicates the sub directory of the file requested
-    // (NOTE: this string has 4 charactes. subdirectories have either 2 or 3 characters.
-    //  thus, for 2 character directories, the string ends with a '\' and for 3 character
-    //  directories, it does not)
-    var pathnameDir = pathname.slice(0,4);
-    console.log("pathnameDir = " + pathnameDir);
+    // Remove first '/' char from pathname, to be used as relative pathname
+    var truePath = pathname.slice(1);
 
-    // string used to get the file requested (pathname without first '/')
-    var getFilePath = pathname.slice(1);
-    console.log("getFilePath = " + getFilePath);
+    // Get type of file requested
+    var requestType = truePath.slice(0, truePath.indexOf('/'));
 
     // index.html response
- 	if (pathname == "/") {
-		getFilePath = "index.html";
+ 	if (pathname == '/') {
+		truePath = 'index.html';
  		contentType = 'text/html'
+ 		requestType = 'html';
  	}
  	// icon response
- 	if (pathname == "/favicon.ico") {
+ 	if (truePath == 'favicon.ico') {
  		contentType = '/image/x-icon'
- 		getFilePath = 'img/favicon.ico'
+ 		truePath = 'img/favicon.ico'
  	}
- 	// js response (getFilePath is already corect)
- 	if (pathnameDir == "/js/") {
+ 	// js response
+ 	if (requestType == 'js') {
  		contentType = 'application/javascript'
  	}
- 	// image response (getFilePath is already corect)
- 	if (pathnameDir == "/img") {
+ 	// image response
+ 	if (requestType == 'img') {
  		contentType = 'image/jpeg'
  	}
+
+    console.log('truePath = ' + truePath);
+    console.log('requestType = ' + requestType);
 
  	// Write http header
 	response.writeHead(200, {'Content-Type': contentType});
 	
 	// Reads file and writes it into http response
-	fs.readFile(getFilePath, function(err, file) {
+	fs.readFile(truePath, function(err, file) {
 		if(err) {
 			throw err;
 		}
