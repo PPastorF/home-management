@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>República Cachorros do Mangue</title>
+
+    <style>
+    	table{
+    		border: 2px solid black;
+    		background-color: #cccccc;
+    		border-radius: 1px;
+	    	border-collapse: collapse;
+    	}
+
+    	tr.proximo {
+    		border: 3px solid black;
+    		background-color: #a6a6a6;
+    		border-radius: 4px;
+    	}
+    	td.botaoBostas {
+    		padding: 1px;
+    	}
+	</style>
+
+	<script src="js/script.js" ></script>
+</head>
+
+
+<body>
+	<h1>República Cachorros do Mangue</h1>
+	<h2>Organização da Casa</h2>
+    <hr>
+    <img src="img/andre_vsf.jpg" align="right" />
+
+    <h3>Comprar:</h3>
+    
+    <table id="comprar" style="{border-bottom:1px solid black}">
+    </table>
+
+	<input type="text" id="inputCompras"></input>
+    <input type="button" id="botaoSubmit" value="Adicionar" onclick="addCompra()"></input>
+
+    <script>
+		// Adding event to submit on enter press if focus is on input
+		var inputComprar = document.getElementById("inputCompras");
+		inputComprar.addEventListener("keyup", function(event) {
+
+			event.preventDefault();
+			if (event.keyCode == 13) {
+				document.getElementById("botaoSubmit").click();
+			}
+		});
+	</script>
+
+    <h3>Escala do lixo:</h3>
+
+    <table id="lixo">
+    </table>
+
+    <script type="text/javascript">
+    	updateTabela('lixo', filaLixo);
+	</script>
+
+    <button id="botaoLixo" onclick="tirouLixo()">Ok</button>
+
+    <h3>Bostas acumuladas:</h3>
+
+    <table id="bostas">
+    </table>
+
+    <script>
+        var bostasTabela = geraTabelaBostas();
+        // Atualiza tabela de bostas
+        updateTabela('bostas', bostasTabela);
+    </script>
+
+</body>
+</html>
