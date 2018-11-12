@@ -41,13 +41,13 @@
     </table>
 
 	<input type="text" id="inputCompras"></input>
-    <input type="button" id="botaoSubmit" value="Adicionar" onclick="addCompra()"></input>
+    <input type="button" id="botaoSubmit" value="Adicionar" onclick="requestAddCompra()"></input>
 
     <script>
 		// Adding event to submit on enter press if focus is on input
 		var inputComprar = document.getElementById("inputCompras");
-		inputComprar.addEventListener("keyup", function(event) {
 
+		inputComprar.addEventListener("keyup", function(event) {
 			event.preventDefault();
 			if (event.keyCode == 13) {
 				document.getElementById("botaoSubmit").click();
@@ -61,10 +61,28 @@
     </table>
 
     <script type="text/javascript">
-    	updateTabela('lixo', filaLixo);
+        // Request
+        var request = new XMLHttpRequest();
+        var url = 'http://localhost:8080/lixo';
+
+        request.open('GET', url);
+        request.responseType = 'text';
+
+        request.onreadystatechange = function() {
+
+            if (this.readyState == 4 && this.status == 200) {
+                var dados = JSON.parse(request.responseText);
+                console.log(dados);
+
+                // Atualiza a tabela de lixos
+                lixoTabela = geraTabelaLixo(dados);
+                updateTabela('lixo', lixoTabela);
+            }
+        }
+        request.send();
 	</script>
 
-    <button id="botaoLixo" onclick="tirouLixo()">Ok</button>
+    <button id="botaoLixo" onclick="requestAndaFilaLixo()">Lixo tirado</button>
 
     <h3>Bostas acumuladas:</h3>
 
@@ -72,9 +90,25 @@
     </table>
 
     <script>
-        var bostasTabela = geraTabelaBostas();
-        // Atualiza tabela de bostas
-        updateTabela('bostas', bostasTabela);
+        // Request
+        var request = new XMLHttpRequest();
+        var url = 'http://localhost:8080/bostas';
+
+        request.open('GET', url);
+        request.responseType = 'text';
+
+        request.onreadystatechange = function() {
+
+            if (this.readyState == 4 && this.status == 200) {
+
+                var dados = JSON.parse(request.responseText);
+
+                // Atualiza tabela de bostas
+                var bostasTabela = geraTabelaBostas(dados);
+                updateTabela('bostas', bostasTabela);
+            }
+        }
+        request.send();
     </script>
 
 </body>
