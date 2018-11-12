@@ -32,12 +32,13 @@ function updateTabela(idTabela, valores) {
 
 
 function geraTabelaCompras(dados) {
-	var botaoRemover = "<button onclick=\"requestRemoveCompra(this)\">-</button>";
+
 
 	var comprasTabela = [];
 
 	dados.forEach( function(elem) {
-		var compraElem = [elem, botaoRemover];
+		var botaoRemover = "<button onclick=\"requestRemoveCompra("+elem.id+")\">-</button>";
+		var compraElem = [elem.nome, botaoRemover];
 		comprasTabela.push(compraElem);
 	});
 	
@@ -76,20 +77,59 @@ function requestAddCompra() {
 	
 	var nomeCompra = document.getElementById("inputCompras").value;
 
-	// Gera vetor para mostrar na tabela
-	comprasTabela = geraTabelaCompras();
+	if (nomeCompra == "") {
+		return;
+	}
 
-	// Atualiza tabela de compras
-	updateTabela('comprar', comprasTabela);
+	// Request
+	var request = new XMLHttpRequest();
+	var url = 'http://localhost:8080/addCompra';
+
+	var param = "nomecompra="+nomeCompra;
+
+	request.open('post', url);
+	request.responseType = 'text';
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+	request.onreadystatechange = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+			var dados = JSON.parse(request.responseText);
+			
+			var tabelaCompras = geraTabelaCompras(dados);
+			updateTabela('comprar', tabelaCompras);
+		}
+	}
+	request.send(param);
+
+	document.getElementById("inputCompras").value = "";
+
 }
 
-function requestRemoveCompra(compra) {
+function requestRemoveCompra(idCompra) {
+	
+	// Request
+	var request = new XMLHttpRequest();
+	var url = 'http://localhost:8080/removeCompra';
 
-	// Gera dados para mostrar na tabela
-	comprasTabela = geraTabelaCompras();
+	var param = "idcompra="+idCompra;
 
-	// Atualiza tabela de compras
-	updateTabela('comprar', comprasTabela);
+	request.open('post', url);
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	request.responseType = 'text';
+
+	request.onreadystatechange = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+			var dados = JSON.parse(request.responseText);
+			
+			var tabelaCompras = geraTabelaCompras(dados);
+			updateTabela('comprar', tabelaCompras);
+		}
+	}
+	request.send(param);
+
+	return;
 }
 
 function requestAndaFilaLixo() {

@@ -44,7 +44,7 @@
     <input type="button" id="botaoSubmit" value="Adicionar" onclick="requestAddCompra()"></input>
 
     <script>
-		// Adding event to submit on enter press if focus is on input
+        // Evento para submeter caso ENTER seja pressionado com o foco no botao
 		var inputComprar = document.getElementById("inputCompras");
 
 		inputComprar.addEventListener("keyup", function(event) {
@@ -53,6 +53,27 @@
 				document.getElementById("botaoSubmit").click();
 			}
 		});
+
+        // Mostrando tabela de compras
+        var requestComprar = new XMLHttpRequest();
+        var url = 'http://localhost:8080/compras';
+
+        requestComprar.open('GET', url);
+        requestComprar.responseType = 'text';
+
+        requestComprar.onreadystatechange = function() {
+
+            if (this.readyState == 4 && this.status == 200) {
+
+                var dados = JSON.parse(requestComprar.responseText);
+
+                // Atualiza tabela
+                var comprasTabela = geraTabelaCompras(dados);
+                updateTabela('comprar', comprasTabela);
+            }
+        }
+        requestComprar.send();
+
 	</script>
 
     <h3>Escala do lixo:</h3>
@@ -62,24 +83,23 @@
 
     <script type="text/javascript">
         // Request
-        var request = new XMLHttpRequest();
+        var requestLixo = new XMLHttpRequest();
         var url = 'http://localhost:8080/lixo';
 
-        request.open('GET', url);
-        request.responseType = 'text';
+        requestLixo.open('GET', url);
+        requestLixo.responseType = 'text';
 
-        request.onreadystatechange = function() {
+        requestLixo.onreadystatechange = function() {
 
             if (this.readyState == 4 && this.status == 200) {
-                var dados = JSON.parse(request.responseText);
-                console.log(dados);
+                var dados = JSON.parse(requestLixo.responseText);
 
                 // Atualiza a tabela de lixos
                 lixoTabela = geraTabelaLixo(dados);
                 updateTabela('lixo', lixoTabela);
             }
         }
-        request.send();
+        requestLixo.send();
 	</script>
 
     <button id="botaoLixo" onclick="requestAndaFilaLixo()">Lixo tirado</button>
@@ -91,24 +111,24 @@
 
     <script>
         // Request
-        var request = new XMLHttpRequest();
+        var requestBostas = new XMLHttpRequest();
         var url = 'http://localhost:8080/bostas';
 
-        request.open('GET', url);
-        request.responseType = 'text';
+        requestBostas.open('GET', url);
+        requestBostas.responseType = 'text';
 
-        request.onreadystatechange = function() {
+        requestBostas.onreadystatechange = function() {
 
             if (this.readyState == 4 && this.status == 200) {
 
-                var dados = JSON.parse(request.responseText);
+                var dados = JSON.parse(requestBostas.responseText);
 
                 // Atualiza tabela de bostas
                 var bostasTabela = geraTabelaBostas(dados);
                 updateTabela('bostas', bostasTabela);
             }
         }
-        request.send();
+        requestBostas.send();
     </script>
 
 </body>

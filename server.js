@@ -5,6 +5,7 @@ var path = require('path');
 var app = express();
 var port = 8080;
 
+
 var compras  = { count: 0, dados: [] };
 var filaLixo = [ {nome: "Gab"}, {nome: "Ribs"}, {nome: "Jub"}, {nome: "Kike"}, {nome: "Murilo"}, {nome: "Pastor"} ];
 var moradores = [{id: 0, nome: "Gab",	 bostas: 0},
@@ -41,14 +42,27 @@ app.get('/andaFilaLixo', function(req, res) {
 app.get('/compras', function(req, res) {
 
 	// Retorna os dados
-	var dados = JSON.stringify(compras);
+	var dados = JSON.stringify(compras.dados);
 	res.send(dados);
 });
 
 app.post('/addCompra', function(req, res) {
+	
+	// Opera sobre os dados
+	addCompra(req.body.nomecompra);
 
 	// Retorna os dados
-	var dados = JSON.stringify(compras);
+	var dados = JSON.stringify(compras.dados);
+	res.send(dados);
+});
+
+app.post('/removeCompra', function(req, res) {
+	
+	// Opera sobre os dados
+	removeCompra(req.body.idcompra);
+
+	// Retorna os dados
+	var dados = JSON.stringify(compras.dados);
 	res.send(dados);
 });
 
@@ -93,8 +107,11 @@ function addCompra(nomeCompra) {
 
 function removeCompra(idCompra) {
 
-	var indice = compras.dados.findIndex(elem => elem.id == idCompra);
-	comprasDados.splice(indice, 1);
+	var indice = compras.dados.findIndex( function(elem) {
+		return elem.id == idCompra;
+	});
+	
+	compras.dados.splice(indice, 1);
 
 	if (compras.dados.length == 0) {
 		compras.count = 0;
