@@ -8,12 +8,12 @@ var port = 8080;
 
 var compras  = { count: 0, dados: [] };
 var filaLixo = [ {nome: "Gab"}, {nome: "Ribs"}, {nome: "Jub"}, {nome: "Kike"}, {nome: "Murilo"}, {nome: "Pastor"} ];
-var moradores = [{id: 0, nome: "Gab",	 bostas: 0},
-				 {id: 1, nome: "Ribs",	 bostas: 0},
-				 {id: 2, nome: "Jub",    bostas: 0},
-				 {id: 3, nome: "Kike",   bostas: 0},
-				 {id: 4, nome: "Murilo", bostas: 0},
-				 {id: 5, nome: "Pastor", bostas: 0}
+var moradores = [{id: 0, nome: "Gab",	 vacilos: 0},
+				 {id: 1, nome: "Ribs",	 vacilos: 0},
+				 {id: 2, nome: "Jub",    vacilos: 0},
+				 {id: 3, nome: "Kike",   vacilos: 0},
+				 {id: 4, nome: "Murilo", vacilos: 0},
+				 {id: 5, nome: "Pastor", vacilos: 0}
 				];
 
 
@@ -66,14 +66,14 @@ app.post('/removeCompra', function(req, res) {
 	res.send(dados);
 });
 
-app.get('/bostas', function(req, res) {
+app.get('/vacilos', function(req, res) {
 
 	// Retorna os dados
 	var dados = JSON.stringify(moradores);
 	res.send(dados);
 });
 
-app.post('/addBosta', function(req, res) {
+app.post('/addVacilo', function(req, res) {
 
 	// Descobre o id do morador
 	var morador = moradores.find( function(elem) { 
@@ -81,7 +81,7 @@ app.post('/addBosta', function(req, res) {
 	});
 	
 	// Opera sobre os dados
-	incBostas(morador.id);
+	incVacilos(morador.id);
 
 	// Retorna os dados
 	var dados = JSON.stringify(moradores);
@@ -124,8 +124,8 @@ function andaFila() {
 	filaLixo.push(aux);
 }
 
-function incBostas(idMorador) {
+function incVacilos(idMorador) {
 
 	var indice = moradores.findIndex(elem => elem.id == idMorador);
-	moradores[indice].bostas += 1;
+	moradores[indice].vacilos += 1;
 }

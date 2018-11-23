@@ -56,21 +56,21 @@ function geraTabelaLixo(dados) {
 	return lixoTabela;
 }
 
-function geraTabelaBostas(dados) {
+function geraTabelaVacilos(dados) {
 
-	var bostasTabela = [];
+	var vacilosTabela = [];
 
 	dados.forEach( function(elem) {
 		
-		var bostasElem = [
-			"<p class='nomeBostas'>" + elem.nome +"</p>",
-			"<p class='nroBostas'>" + elem.bostas +"</p>",
-			"<button onclick='requestAddBosta(this)' class='botaoAddBostas'> + </button>"
+		var vacilosElem = [
+			"<p class='nomeVacilos'>" + elem.nome +"</p>",
+			"<p class='nroVacilos'>" + elem.vacilos +"</p>",
+			"<button onclick='requestAddVacilo(this)' class='botaoAddVacilos'> + </button>"
 		];
 
-		bostasTabela.push(bostasElem);
+		vacilosTabela.push(vacilosElem);
 	});
-	return bostasTabela;
+	return vacilosTabela;
 }
 
 function requestAddCompra() {
@@ -155,13 +155,13 @@ function requestAndaFilaLixo() {
 
 }
 
-function requestAddBosta(quem) {
+function requestAddVacilo(quem) {
 
 	moradorNome = quem.parentNode.parentNode.cells[0].firstChild.innerHTML;
 
 	// Request
 	var request = new XMLHttpRequest();
-	var url = 'http://localhost:8080/addBosta';
+	var url = 'http://localhost:8080/addVacilo';
 
 	var param = "nome="+moradorNome;
 
@@ -174,8 +174,8 @@ function requestAddBosta(quem) {
         if (this.readyState == 4 && this.status == 200) {
 			var dados = JSON.parse(request.responseText);
 			
-			var tabelaBostas = geraTabelaBostas(dados);
-			updateTabela('bostas', tabelaBostas);
+			var tabelaVacilos = geraTabelaVacilos(dados);
+			updateTabela('vacilos', tabelaVacilos);
 		}
 	}
 	request.send(param);

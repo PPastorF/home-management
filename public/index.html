@@ -20,7 +20,7 @@
     		background-color: #a6a6a6;
     		border-radius: 4px;
     	}
-    	td.botaoBostas {
+    	td.botaoVacilos {
     		padding: 1px;
     	}
 	</style>
@@ -104,31 +104,31 @@
 
     <button id="botaoLixo" onclick="requestAndaFilaLixo()">Lixo tirado</button>
 
-    <h3>Bostas acumuladas:</h3>
+    <h3>Vacilos:</h3>
 
-    <table id="bostas">
+    <table id="vacilos">
     </table>
 
     <script>
         // Request
-        var requestBostas = new XMLHttpRequest();
-        var url = 'http://localhost:8080/bostas';
+        var requestVacilos = new XMLHttpRequest();
+        var url = 'http://localhost:8080/vacilos';
 
-        requestBostas.open('GET', url);
-        requestBostas.responseType = 'text';
+        requestVacilos.open('GET', url);
+        requestVacilos.responseType = 'text';
 
-        requestBostas.onreadystatechange = function() {
+        requestVacilos.onreadystatechange = function() {
 
             if (this.readyState == 4 && this.status == 200) {
 
-                var dados = JSON.parse(requestBostas.responseText);
+                var dados = JSON.parse(requestVacilos.responseText);
 
-                // Atualiza tabela de bostas
-                var bostasTabela = geraTabelaBostas(dados);
-                updateTabela('bostas', bostasTabela);
+                // Atualiza tabela de vacilos
+                var vacilosTabela = geraTabelaVacilos(dados);
+                updateTabela('vacilos', vacilosTabela);
             }
         }
-        requestBostas.send();
+        requestVacilos.send();
     </script>
 
 </body>
